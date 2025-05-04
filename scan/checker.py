@@ -84,6 +84,39 @@ def run_tests():
 
     return correct, your_times, fast_times
 
+# def run_tests():
+#     correct = {
+#         "1000000": True,
+#         "10000000": True,
+#         "20000000": True,
+#         "40000000": True,
+#     }
+
+#     your_times = {
+#         "1000000": 1.364,
+#         "10000000": 22.462,
+#         "20000000": 31.427,
+#         "40000000": 63.702,
+#     }
+
+#     fast_times = {
+#         "1000000": 2.354,
+#         "10000000": 15.212,
+#         "20000000": 37.811,
+#         "40000000": 65.956,
+#     }
+
+#     for element_count in element_counts:
+#         print(f"\nElement Count: {element_count}")
+#         if correct[element_count]:
+#             print("Correctness passed!")
+#         else:
+#             print("Correctness failed!")
+
+#         print(f"Student Time: {your_times[element_count]}")
+#         print(f"Ref Time: {fast_times[element_count]}")
+
+#     return correct, your_times, fast_times
 
 def calculate_scores(correct, your_times, fast_times):
     scores = []
