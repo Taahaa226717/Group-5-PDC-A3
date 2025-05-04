@@ -85,9 +85,7 @@ In this task, we develop a parallel CUDA program to find the indices where two c
 
 ---
 
-# Commit Description: CUDA-based Circle Renderer Implementation
-
-This commit implements the CUDA-based renderer for the circle rendering assignment, ensuring both atomicity and correct ordering of pixel updates. The following changes were made:
+# Task 3: CUDA-based Circle Renderer Implementation
 
 ### 1. **CUDA Kernel for Circle Rendering (`kernelRenderCircles`)**:
 
@@ -112,10 +110,6 @@ This commit implements the CUDA-based renderer for the circle rendering assignme
 ### 5. **Improved Parallelization**:
 
 - The parallelization of circle processing was optimized by structuring the kernel to handle pixel updates efficiently, distributing the work across GPU threads.
-
-### Summary:
-
-These changes ensure that the final image produced by the CUDA renderer is both accurate and performant. The implementation adheres to the correctness requirements, preventing race conditions and artifacts, and optimizes parallel processing for better performance.
 
 # Render Performance Results
 
