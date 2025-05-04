@@ -117,9 +117,6 @@ This commit implements the CUDA-based renderer for the circle rendering assignme
 
 These changes ensure that the final image produced by the CUDA renderer is both accurate and performant. The implementation adheres to the correctness requirements, preventing race conditions and artifacts, and optimizes parallel processing for better performance.
 
-Here's the content formatted in Markdown:
-
-```markdown
 # Render Performance Results
 
 ## Test Configuration
@@ -159,6 +156,7 @@ Here's the content formatted in Markdown:
 ## Detailed Logs
 
 ### rgb Test (3 circles)
+
 ```
 
 Rendering to 1024x1024 image
@@ -192,6 +190,7 @@ Overall: 0.1873 sec (note units are seconds)
 ```
 
 ### rgby Test (4 circles)
+
 ```
 
 Rendering to 1024x1024 image
@@ -225,6 +224,7 @@ Overall: 0.1664 sec (note units are seconds)
 ```
 
 ### rand10k Test (10,000 circles)
+
 ```
 
 Rendering to 1024x1024 image
@@ -258,6 +258,7 @@ Overall: 0.8594 sec (note units are seconds)
 ```
 
 ### rand100k Test (100,000 circles)
+
 ```
 
 Rendering to 1024x1024 image
@@ -291,6 +292,7 @@ Overall: 7.6741 sec (note units are seconds)
 ```
 
 ### rand1M Test (1,000,000 circles)
+
 ```
 
 Rendering to 1024x1024 image
@@ -320,6 +322,8 @@ Total: 1854.1312 ms
 File IO: 129.8566 ms
 
 Overall: 6.9345 sec (note units are seconds)
+
+```
 
 ```
 
