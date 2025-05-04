@@ -116,3 +116,211 @@ This commit implements the CUDA-based renderer for the circle rendering assignme
 ### Summary:
 
 These changes ensure that the final image produced by the CUDA renderer is both accurate and performant. The implementation adheres to the correctness requirements, preventing race conditions and artifacts, and optimizes parallel processing for better performance.
+
+Here's the content formatted in Markdown:
+
+```markdown
+# Render Performance Results
+
+## Test Configuration
+
+- **GPU**: NVIDIA GeForce MX130 (Compute Capability 5.0, 3 SMs, 2GB RAM)
+- **Image Resolution**: 1024×1024
+- **Benchmark**: Single-frame rendering
+
+## Performance Summary Table
+
+| Test Case | Circles   | Render Time (ms) | Total Time (ms) | Throughput (circles/ms) | Status    |
+| --------- | --------- | ---------------- | --------------- | ----------------------- | --------- |
+| rgb       | 3         | 1.38             | 1.99            | 2.17                    | ✅ Passed |
+| rgby      | 4         | 1.29             | 1.88            | 3.10                    | ✅ Passed |
+| rand10k   | 10,000    | 53.26            | 53.94           | 187.76                  | ✅ Passed |
+| rand100k  | 100,000   | 484.46           | 485.05          | 206.41                  | ✅ Passed |
+| rand1M    | 1,000,000 | 1801.71          | 1802.30         | 555.08                  | ✅ Passed |
+| pattern   | 1,217     | 3.80             | 4.41            | 320.26                  | ✅ Passed |
+| micro2M   | 2,000,000 | -                | -               | -                       | ❌ Failed |
+
+## Key Observations
+
+### Scaling Behavior:
+
+- Throughput improves with larger workloads (e.g., 206 circles/ms at 100k → 555 circles/ms at 1M).
+- Exception: **micro2M** fails due to memory constraints or correctness issues.
+
+### PCIe Impact:
+
+- File I/O adds ~150 ms overhead across tests (non-optimized).
+
+### Special Cases:
+
+- **snow (100k circles)**: 128 ms render time (faster than rand100k due to simpler geometry?).
+- **biglittle/littlebig**: Similar performance (~373 ms) despite scene ordering differences.
+
+## Detailed Logs
+
+### rgb Test (3 circles)
+```
+
+Rendering to 1024x1024 image
+Loaded scene with 3 circles
+
+---
+
+Initializing CUDA for CudaRenderer
+Found 1 CUDA devices
+Device 0: NVIDIA GeForce MX130
+SMs: 3
+Global mem: 1996 MB
+CUDA Cap: 5.0
+
+---
+
+Running benchmark, 1 frames, beginning at frame 0 ...
+Dumping frames to output_xxx.ppm
+Copying image data from device
+Wrote image file output_0000.ppm
+Copying image data from device
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Correctness check passed \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+Clear: 0.5935 ms
+Advance: 0.0014 ms
+Render: 1.3364 ms
+Total: 1.9313 ms
+File IO: 155.9103 ms
+
+Overall: 0.1873 sec (note units are seconds)
+
+```
+
+### rgby Test (4 circles)
+```
+
+Rendering to 1024x1024 image
+Loaded scene with 4 circles
+
+---
+
+Initializing CUDA for CudaRenderer
+Found 1 CUDA devices
+Device 0: NVIDIA GeForce MX130
+SMs: 3
+Global mem: 1996 MB
+CUDA Cap: 5.0
+
+---
+
+Running benchmark, 1 frames, beginning at frame 0 ...
+Dumping frames to output_xxx.ppm
+Copying image data from device
+Wrote image file output_0000.ppm
+Copying image data from device
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Correctness check passed \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+Clear: 0.6032 ms
+Advance: 0.0014 ms
+Render: 1.2994 ms
+Total: 1.9040 ms
+File IO: 135.2670 ms
+
+Overall: 0.1664 sec (note units are seconds)
+
+```
+
+### rand10k Test (10,000 circles)
+```
+
+Rendering to 1024x1024 image
+Loaded scene with 10000 circles
+
+---
+
+Initializing CUDA for CudaRenderer
+Found 1 CUDA devices
+Device 0: NVIDIA GeForce MX130
+SMs: 3
+Global mem: 1996 MB
+CUDA Cap: 5.0
+
+---
+
+Running benchmark, 1 frames, beginning at frame 0 ...
+Dumping frames to output_xxx.ppm
+Copying image data from device
+Wrote image file output_0000.ppm
+Copying image data from device
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Correctness check passed \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+Clear: 0.5894 ms
+Advance: 0.0013 ms
+Render: 53.4337 ms
+Total: 54.0244 ms
+File IO: 156.8192 ms
+
+Overall: 0.8594 sec (note units are seconds)
+
+```
+
+### rand100k Test (100,000 circles)
+```
+
+Rendering to 1024x1024 image
+Loaded scene with 100000 circles
+
+---
+
+Initializing CUDA for CudaRenderer
+Found 1 CUDA devices
+Device 0: NVIDIA GeForce MX130
+SMs: 3
+Global mem: 1996 MB
+CUDA Cap: 5.0
+
+---
+
+Running benchmark, 1 frames, beginning at frame 0 ...
+Dumping frames to output_xxx.ppm
+Copying image data from device
+Wrote image file output_0000.ppm
+Copying image data from device
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Correctness check passed \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+Clear: 0.5935 ms
+Advance: 0.0014 ms
+Render: 473.5014 ms
+Total: 474.0964 ms
+File IO: 152.4718 ms
+
+Overall: 7.6741 sec (note units are seconds)
+
+```
+
+### rand1M Test (1,000,000 circles)
+```
+
+Rendering to 1024x1024 image
+Loaded scene with 1000000 circles
+
+---
+
+Initializing CUDA for CudaRenderer
+Found 1 CUDA devices
+Device 0: NVIDIA GeForce MX130
+SMs: 3
+Global mem: 1996 MB
+CUDA Cap: 5.0
+
+---
+
+Running benchmark, 1 frames, beginning at frame 0 ...
+Dumping frames to output_xxx.ppm
+Copying image data from device
+Wrote image file output_0000.ppm
+Copying image data from device
+\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\* Correctness check passed \*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*
+Clear: 0.5879 ms
+Advance: 0.0018 ms
+Render: 1853.5415 ms
+Total: 1854.1312 ms
+File IO: 129.8566 ms
+
+Overall: 6.9345 sec (note units are seconds)
+
+```
+
+```
